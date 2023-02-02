@@ -4,9 +4,10 @@ import json
 import logging
 import os
 import requests
+import sys
 
 # Configuration - Logging
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+logging.getLogger().setLevel(logging.INFO)
 
 # Variables
 config = {
@@ -17,7 +18,6 @@ config = {
     's3_prefix_output': os.environ['S3_PREFIX_OUT'],
     's3_key'          : os.environ['S3_KEY'],
     's3_secret'       : os.environ['S3_SECRET'],
-    'api_key_id'      : os.environ['API_KEY'],
     'api_key_secret'  : os.environ['API_SECRET']
 }
 
@@ -200,7 +200,6 @@ def check_processing_objects():
         else:
             logging.info("Processing directory is empty")
             return None
-
     except ClientError as e:
         logging.error("Bucket listing failed: {}".format(e))
         return None
@@ -268,6 +267,6 @@ def check_processing_objects():
             continue
         
 # Main handler
-
-process_input_objects()
-check_processing_objects()
+def handler(event, context):
+    process_input_objects()
+    check_processing_objects()
