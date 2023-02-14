@@ -10,7 +10,7 @@
 
 ## Процесс распознавания
 
-<img src="img/diagram.jpg" width="800px" alt="Процесс распознавания длинных аудио файлов" />
+<img src="img/diag-1.jpg" width="1200px" alt="Процесс распознавания длинных аудио файлов" />
 <br><br>
 
 
@@ -55,6 +55,7 @@
 
 Для того, чтобы создать ключ для S3 и API-ключ – необходимо [создать сервисную учетную запись](https://cloud.yandex.ru/docs/iam/operations/sa/create), а также – [назначить роли](https://cloud.yandex.ru/docs/iam/operations/sa/assign-role-for-sa) `storage.editor` и `ai.speechkit-stt.user`.
 <br><br>
+
 ## Примеры использования
 
 Можно воспользоваться готовым [Terraform модулем](examples/asr-batch-function), который создает все необходимые ресурсы для начала обработки длинных аудио-файлов.
