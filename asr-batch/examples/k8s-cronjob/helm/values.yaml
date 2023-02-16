@@ -4,7 +4,7 @@ image:
   tag: ""
 
 config:
-  bucket: "speechkit-tools-test" # create a bucket in Object Storage and put the bucket name here
+  bucket: "xxxxxx" # create a bucket in Object Storage and put the bucket name here
   prefixIn: "input"
   prefixLog: "log"
   prefixOut: "out"
