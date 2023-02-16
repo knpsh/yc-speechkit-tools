@@ -8,6 +8,6 @@ config:
   prefixIn: "input"
   prefixLog: "log"
   prefixOut: "out"
-  s3Key: "YCAJEJ7fasWaOikx__kJWyb_o" # create a static key for Object Storage access
-  s3Secret: "YCPirr_1rBU83GS88F-5NmHi2RsV59j2WsaOH-Qh" # create a static key secret for Object Storage access
-  apiSecret: "AQVNxmjd64L5TspysTMMuwvf9UGfjGT29jD8Cx5K" # API-key for SpeechKit access
+  s3Key: "xxx" # create a static key for Object Storage access
+  s3Secret: "xxx-5NmHi2RsV59j2WsaOH-Qh" # create a static key secret for Object Storage access
+  apiSecret: "xxx" # API-key for SpeechKit access
