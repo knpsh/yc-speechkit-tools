@@ -57,12 +57,16 @@ resource "yandex_function" "main" {
   }
 }
 
-resource "yandex_function_trigger" "cron" {
-  name        = "ocr-cron-${random_string.suffix.result}"
-  description = "ocr-cron-${random_string.suffix.result}"
-  timer {
-    cron_expression = "0/2 * * * ? *"
+resource "yandex_function_trigger" "s3" {
+  name        = "ocr-s3-${random_string.suffix.result}"
+  description = "ocr-s3-${random_string.suffix.result}"
+  
+  object_storage {
+    bucket_id = yandex_storage_bucket.bucket.id
+    prefix    = var.s3_prefix_input
+    create    = true
   }
+
   function {
     id = yandex_function.main.id
     service_account_id = yandex_iam_service_account.sa-invoker.id

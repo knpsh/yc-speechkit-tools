@@ -138,37 +138,15 @@ def analyze_pdf(url):
     return response_data
 
 # Core - Process input directory
-def process_input_objects():
-    try:
-        result = s3.list_objects_v2(Bucket=config['s3_bucket'], Prefix=config['s3_prefix'])
+def process_input_objects(event = None):
 
-        if not (result.get('KeyCount') == 0):
-            logging.info("Bucket listing successful")
-            objects = result.get('Contents')
-        else:
-            logging.info("Input directory is empty")
-            return None
-
-    except ClientError as e:
-        logging.error("Bucket listing failed: {}".format(e))
-        return None
-    
-    for obj in objects:
-        key = obj.get('Key')
-
+    for msg in event['messages']:
+        key = msg['details']['object_id']
+        
         if not (key.lower().endswith(suffixes)):
             logging.info("Not supported file format: {}".format(key))
             continue
 
-        key_process = config['s3_prefix_output'] + key[len(config['s3_prefix']):] + ".json"
-
-        try:
-            s3.head_object(Bucket=config['s3_bucket'], Key=key_process)
-        except Exception as e:
-            logging.info("Object doesn't exist {}".format(e))
-        else:
-            logging.info("Already processed, skipping object: {}".format(key))
-            continue
         
         url = create_presigned_url(key)
         
@@ -187,7 +165,6 @@ def process_input_objects():
             logging.error("Object result upload failed: {}".format(e))
             continue
             
-        
         result_key = config['s3_prefix_output'] + key[len(config['s3_prefix']):] + '.txt'
         words = json_extract(result, 'text')
         words_concat = " ".join(words)
@@ -198,7 +175,7 @@ def process_input_objects():
         except ClientError as e:
             logging.error("Object result upload failed: {}".format(e))
             continue
-
+            
 # Main handler
 def handler(event, context):
-    process_input_objects()
+    process_input_objects(event)
