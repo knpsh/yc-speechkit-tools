@@ -23,12 +23,7 @@ variable s3_prefix_input {
     default = "input"
 }
 
-variable s3_prefix_log {
-    description = "S3 prefix for files in process"
-    default = "log"
-}
-
 variable s3_prefix_out {
     description = "S3 prefix for processed files"
-    default = "out"
+    default = "result"
 }

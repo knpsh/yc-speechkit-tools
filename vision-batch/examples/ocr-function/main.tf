@@ -16,7 +16,7 @@ resource "random_string" "suffix" {
 # Cloud Function
 resource "yandex_function" "main" {
   folder_id          = var.folder_id
-  name               = "asr-batch-${random_string.suffix.result}"
+  name               = "ocr-${random_string.suffix.result}"
   runtime            = "python38"
   entrypoint         = "main.handler"
   memory             = "128"
@@ -26,8 +26,8 @@ resource "yandex_function" "main" {
   environment = {
     S3_BUCKET     = yandex_storage_bucket.bucket.id
     S3_PREFIX     = var.s3_prefix_input
-    S3_PREFIX_LOG = var.s3_prefix_log
     S3_PREFIX_OUT = var.s3_prefix_out
+    FOLDER_ID     = var.folder_id
   }
 
   secrets {
@@ -58,10 +58,10 @@ resource "yandex_function" "main" {
 }
 
 resource "yandex_function_trigger" "cron" {
-  name        = "asr-batch-cron-${random_string.suffix.result}"
-  description = "asr-batch-cron-${random_string.suffix.result}"
+  name        = "ocr-cron-${random_string.suffix.result}"
+  description = "ocr-cron-${random_string.suffix.result}"
   timer {
-    cron_expression = "0/3 * * * ? *"
+    cron_expression = "0/2 * * * ? *"
   }
   function {
     id = yandex_function.main.id
@@ -72,14 +72,14 @@ resource "yandex_function_trigger" "cron" {
 # Create service account for bucket
 resource "yandex_iam_service_account" "sa" {
   folder_id       = var.folder_id
-  name            = "asr-batch-sa-${random_string.suffix.result}"
-  description     = "asr-batch-sa-${random_string.suffix.result}"
+  name            = "ocr-sa-${random_string.suffix.result}"
+  description     = "ocr-sa-${random_string.suffix.result}"
 }
 
-resource "yandex_resourcemanager_folder_iam_member" "sa-stt-user" {
+resource "yandex_resourcemanager_folder_iam_member" "sa-vision-user" {
   folder_id       = var.folder_id
   member          = "serviceAccount:${yandex_iam_service_account.sa.id}"
-  role            = "ai.speechkit-stt.user"
+  role            = "ai.vision.user"
 }
 
 resource "yandex_resourcemanager_folder_iam_member" "sa-storage-editor" {
@@ -97,8 +97,8 @@ resource "yandex_resourcemanager_folder_iam_member" "sa-lockbox-payload" {
 # Create service account for function trigger
 resource "yandex_iam_service_account" "sa-invoker" {
   folder_id       = var.folder_id
-  name            = "asr-batch-sa-invoker-${random_string.suffix.result}"
-  description     = "asr-batch-sa-invoker-${random_string.suffix.result}"
+  name            = "ocr-sa-invoker-${random_string.suffix.result}"
+  description     = "ocr-sa-invoker-${random_string.suffix.result}"
 }
 
 resource "yandex_resourcemanager_folder_iam_member" "sa-invoker" {
@@ -110,34 +110,25 @@ resource "yandex_resourcemanager_folder_iam_member" "sa-invoker" {
 # Static access key
 resource "yandex_iam_service_account_static_access_key" "sa-static-key" {
   service_account_id = yandex_iam_service_account.sa.id
-  description        = "asr-batch-${random_string.suffix.result} static key"
+  description        = "ocr-${random_string.suffix.result} static key"
 }
 
 # Object storage bucket
 resource "yandex_storage_bucket" "bucket" {
   access_key = yandex_iam_service_account_static_access_key.sa-static-key.access_key
   secret_key = yandex_iam_service_account_static_access_key.sa-static-key.secret_key
-  bucket = "asr-batch-${random_string.suffix.result}"
-}
-
-resource "yandex_storage_object" "config-json" {
-  bucket = yandex_storage_bucket.bucket.id
-  key    = "${var.s3_prefix_input}/config.json"
-  content_type = "application/json"
-  content_base64 = "ewogICAgImxhbmciOiAicnUtUlUiCn0="
-  access_key = yandex_iam_service_account_static_access_key.sa-static-key.access_key
-  secret_key = yandex_iam_service_account_static_access_key.sa-static-key.secret_key
+  bucket = "ocr-${random_string.suffix.result}"
 }
 
 # API key
 resource "yandex_iam_service_account_api_key" "sa-api-key" {
   service_account_id = yandex_iam_service_account.sa.id
-  description        = "asr-batch-${random_string.suffix.result} API key"
+  description        = "ocr-${random_string.suffix.result} API key"
 }
 
 # Lockbox
 resource "yandex_lockbox_secret" "secret-aws" {
-  name = "asr-batch-aws-${random_string.suffix.result}"
+  name = "ocr-aws-${random_string.suffix.result}"
 }
 
 resource "yandex_lockbox_secret_version" "secret-aws-v1" {
@@ -153,7 +144,7 @@ resource "yandex_lockbox_secret_version" "secret-aws-v1" {
 }
 
 resource "yandex_lockbox_secret" "secret-api" {
-  name = "asr-batch-api-${random_string.suffix.result}"
+  name = "ocr-api-${random_string.suffix.result}"
 }
 
 resource "yandex_lockbox_secret_version" "secret-api-v1" {
