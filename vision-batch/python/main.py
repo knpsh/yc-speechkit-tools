@@ -10,27 +10,15 @@ import requests
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 # Variables
-# config = {
-#     's3_bucket'       : os.environ['S3_BUCKET'],
-#     's3_prefix'       : os.environ['S3_PREFIX'],
-#     's3_bucket_output': os.environ['S3_BUCKET'],
-#     's3_prefix_output': os.environ['S3_PREFIX_OUT'],
-#     's3_key'          : os.environ['S3_KEY'],
-#     's3_secret'       : os.environ['S3_SECRET'],
-#     'api_key_secret'  : os.environ['API_SECRET'],
-#     'folder_id'       : os.environ['FOLDER_ID']
-# }
-
-# Test
 config = {
-    's3_bucket'       : "vision-batch-kirshe",
-    's3_prefix'       : "input",
-    's3_bucket_output': "vision-batch-kirshe",
-    's3_prefix_output': "result",
-    's3_key'          : "YCAJE2Jg8vlPohN_goPq4PLJ-",
-    's3_secret'       : "YCMg1djwRX9CJLKFu3o1zwl0ZCQLJCpHZF8DIIJ7",
-    'api_key_secret'  : "AQVNzThxhq8a5mVj2AdTvntBvt8deVEV_9KvJKS-",
-    'folder_id'       : "b1g7jgrmmcumg8459456"
+    's3_bucket'       : os.environ['S3_BUCKET'],
+    's3_prefix'       : os.environ['S3_PREFIX'],
+    's3_bucket_output': os.environ['S3_BUCKET'],
+    's3_prefix_output': os.environ['S3_PREFIX_OUT'],
+    's3_key'          : os.environ['S3_KEY'],
+    's3_secret'       : os.environ['S3_SECRET'],
+    'api_key_secret'  : os.environ['API_SECRET'],
+    'folder_id'       : os.environ['FOLDER_ID']
 }
 
 suffixes = (".jpg", ".jpeg", ".png", ".pdf")
