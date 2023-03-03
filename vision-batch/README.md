@@ -2,8 +2,6 @@
 
 Данный скрипт берет изображения и PDF-документы из бакета [Object Storage](https://cloud.yandex.ru/services/storage), отправляет их на распознавание в сервис [Vision](https://cloud.yandex.ru/services/vision), после чего – сохраняет результат распознавания обратно в [бакет](https://cloud.yandex.ru/docs/storage/concepts/bucket) Object Storage.
 
-Процесс распознавания длинных аудио – синхронный.
-
 Скрипт написан на Python поэтому может быть легко разобран, доработан и оптимизирован под ваш сценарий.
 <br><br>
 
