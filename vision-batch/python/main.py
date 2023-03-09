@@ -163,7 +163,7 @@ def process_input_objects():
         key_process = config['s3_prefix_output'] + key[len(config['s3_prefix']):] + ".json"
 
         try:
-            s3.head_object(Bucket=config['s3_bucket'], Key=key_process)
+            s3.head_object(Bucket=config['s3_bucket_output'], Key=key_process)
         except Exception as e:
             logging.info("Object doesn't exist {}".format(e))
         else:
