@@ -1,6 +1,6 @@
 # OCR Recognizer 
 
-<img src="img/diag-1.jpg" width="600px" alt="Процесс распознавания длинных аудио файлов" />
+<img src="img/diag-1a.jpg" width="600px" alt="Процесс распознавания длинных аудио файлов" />
 <br><br>
 
 Данный скрипт берет изображения и PDF-документы из бакета [Object Storage](https://cloud.yandex.ru/services/storage), отправляет их на распознавание в сервис [Vision](https://cloud.yandex.ru/services/vision), после чего – сохраняет результат распознавания обратно в [бакет](https://cloud.yandex.ru/docs/storage/concepts/bucket) Object Storage.
